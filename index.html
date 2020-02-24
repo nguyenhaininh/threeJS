@@ -19,6 +19,7 @@
 <body>
 
 	<script src="js/three.js"></script>
+	<script src="js/OrbitControls.js"></script>
 
 	<script>
 		var scene = new THREE.Scene();
@@ -35,6 +36,8 @@
 			camera.aspect = width / height;
 			camera.updateProjectionMatrix();
 		});
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 		// create the shape
 		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
