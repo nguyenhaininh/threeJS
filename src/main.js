@@ -1,39 +1,33 @@
-import {
-	BoxBufferGeometry,
-	Mesh,
-	MeshBasicMaterial,
-	PerspectiveCamera,
-	Scene,
-	WebGLRenderer
-} from 'three';
+import * as THREE from 'three';
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-let camera, scene, renderer;
+var camera, scene, renderer;
+var mesh;
 
 class App {
 
 	init() {
 
-		camera = new PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
 		camera.position.z = 400;
 
-		scene = new Scene();
+		scene = new THREE.Scene();
 
-		const geometry = new BoxBufferGeometry( 200, 200, 200 );
-		const material = new MeshBasicMaterial();
+		var texture = new THREE.TextureLoader().load( './img/crate.gif' );
 
-		const mesh = new Mesh( geometry, material );
+		var geometry = new THREE.BoxBufferGeometry( 200, 200, 200 );
+		var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+		mesh = new THREE.Mesh( geometry, material );
 		scene.add( mesh );
 
-		renderer = new WebGLRenderer( { antialias: true } );
+		renderer = new THREE.WebGLRenderer( { antialias: true } );
 		renderer.setPixelRatio( window.devicePixelRatio );
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 
-		window.addEventListener( 'resize', onWindowResize, false );
+		//
 
-		const controls = new OrbitControls( camera, renderer.domElement );
+		window.addEventListener( 'resize', onWindowResize, false );
 
 		animate();
 
@@ -53,8 +47,14 @@ function onWindowResize() {
 function animate() {
 
 	requestAnimationFrame( animate );
-	renderer.render( scene, camera );
+	render();
+}
 
+function render() {
+	mesh.rotation.x += 0.005;
+	mesh.rotation.y += 0.01;
+
+	renderer.render( scene, camera );
 }
 
 export { App }
